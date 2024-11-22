@@ -18,6 +18,10 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+# Manages authorizations based on user roles
+gem "pundit"
+# Treat Strings as IO Objects
+gem "stringio", "~> 3.1.2"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"

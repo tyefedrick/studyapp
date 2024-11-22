@@ -1,8 +1,16 @@
 Rails.application.routes.draw do
+  get "registrations/new"
+  get "registrations/create"
   root "welcome#index"
   get "welcome/index"
-  resource :session
-  resources :passwords, param: :token
+  resource :session, only: %i[new create destroy] do
+    member do
+      patch :promote_to_admin
+    end
+  end
+
+  resource :registration, only: %i[new create]
+  resources :passwords, param: :token, only: %i[new create edit update]
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -154,7 +154,7 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     msgpack (1.7.5)
     net-imap (0.5.1)
       date
@@ -192,6 +192,8 @@ GEM
     public_suffix (6.0.1)
     puma (6.4.3)
       nio4r (~> 2.0)
+    pundit (2.4.0)
+      activesupport (>= 3.0.0)
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.8)
@@ -346,6 +348,7 @@ DEPENDENCIES
   kamal
   propshaft
   puma (>= 5.0)
+  pundit
   rails (~> 8.0.0)
   rubocop-rails-omakase
   selenium-webdriver
@@ -354,6 +357,7 @@ DEPENDENCIES
   solid_queue
   sqlite3 (>= 2.1)
   stimulus-rails
+  stringio (~> 3.1.2)
   thruster
   turbo-rails
   tzinfo-data
