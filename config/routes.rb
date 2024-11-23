@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :registration, only: %i[new create]
+  resources :registrations, only: [ :new, :create ]
   resources :passwords, param: :token, only: %i[new create edit update]
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
