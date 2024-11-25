@@ -11,6 +11,13 @@ class UsersController < ApplicationController
     end
   end
 
+  get "profile", to: "users#show", as: :profile
+
+  def show
+    @user = current_user
+    # Render the profile view
+  end
+
   private
 
   def authorize_admin

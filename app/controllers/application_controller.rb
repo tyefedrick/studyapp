@@ -1,15 +1,19 @@
 class ApplicationController < ActionController::Base
   include Authentication
   before_action :require_authentication
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
-  helper_method :user_signed_in?
+  helper_method :current_user, :user_signed_in?
+
+  protect_from_forgery with: :exception
 
   private
 
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
   def user_signed_in?
-    # Replace this with your actual logic to check if a user is logged in
-    session[:user_id].present?
+    current_user.present?
   end
 end

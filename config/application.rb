@@ -11,17 +11,23 @@ module Studyapp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
-    # Please, add to the `ignore` list any other `lib` subdirectories that do
-    # not contain `.rb` files, or that should not be reloaded or eager loaded.
-    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    # Autoload and eager load the 'lib' directory, excluding specified subdirectories.
+    # The 'ignore' option should list subdirectories within 'lib' that do not contain
+    # Ruby files or should not be autoloaded/eager loaded.
     config.autoload_lib(ignore: %w[assets tasks])
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Set the application's time zone.
+    config.time_zone = "Central Time (US & Canada)"
+
+    # Add additional directories to the eager load paths if needed.
+    # For example, to include the 'extras' directory:
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure session store to use cookies, ensuring session persistence.
+    config.session_store :cookie_store, key: "_studyapp_session"
+
+    # Ensure middleware for session management is included.
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_studyapp_session"
   end
 end
