@@ -1,23 +1,20 @@
 require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get registrations_new_url
-    assert_response :success
-  end
-
-  test "should create user" do
-    post registrations_path, params: {
-      user: {
-        email_address: "test@example.com",
-        password: "password123",
-        password_confirmation: "password123"
+  test "should create user and redirect to login" do
+    assert_difference("User.count") do
+      post registrations_path, params: {
+        user: {
+          email_address: "test@example.com",
+          password: "password123",
+          password_confirmation: "password123"
+        }
       }
-    }
-    assert_response :redirect
+    end
+    assert_redirected_to new_session_path
     follow_redirect!
     assert_response :success
-    assert_equal root_path, path
+    assert_select "div.alert.alert-notice", "Account created successfully. Please log in."
   end
 
   private
