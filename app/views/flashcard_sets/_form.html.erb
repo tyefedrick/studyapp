@@ -1,0 +1,32 @@
+<!-- app/views/flashcard_sets/_form.html.erb -->
+<%= form_with(model: flashcard_set, local: true) do |form| %>
+<% if flashcard_set.errors.any? %>
+<div id="error_explanation">
+    <h2><%= pluralize(flashcard_set.errors.count, "error") %> prohibited this flashcard set from being saved:</h2>
+    <ul>
+        <% flashcard_set.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+</div>
+
+<div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+</div>
+
+<div class="field">
+    <%= form.label :visibility %>
+    <%= form.select :visibility, FlashcardSet::VISIBILITY_OPTIONS.map { |key, value| [key.to_s.humanize, value] } %>
+</div>
+
+<div class="actions">
+    <%= form.submit %>
+</div>
+<% end %>

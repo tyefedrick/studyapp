@@ -1,0 +1,33 @@
+<h1><%= @flashcard_set.title %></h1>
+<p><%= @flashcard_set.description %></p>
+
+<h2>Flashcards</h2>
+<ul>
+    <% @flashcard_set.flashcards.each do |flashcard| %>
+    <li>
+        <strong>Q:</strong> <%= flashcard.question %><br>
+        <strong>A:</strong> <%= flashcard.answer %>
+        <%= link_to 'Edit', edit_flashcard_set_flashcard_path(@flashcard_set, flashcard), class: 'btn btn-primary btn-sm' %>
+        <%= button_to 'Delete', flashcard_set_flashcard_path(@flashcard_set, flashcard), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm' %>
+    </li>
+    <% end %>
+</ul>
+
+<h3>Add a New Flashcard</h3>
+<%= form_with model: [@flashcard_set, @flashcard_set.flashcards.build], local: true do |form| %>
+<div class="field">
+    <%= form.label :question %>
+    <%= form.text_field :question, required: true %>
+</div>
+<div class="field">
+    <%= form.label :answer %>
+    <%= form.text_area :answer, required: true %>
+</div>
+<div class="actions">
+    <%= form.submit "Add Flashcard", class: "btn btn-success" %>
+</div>
+<% end %>
+
+<%= link_to 'Edit Flashcard Set', edit_flashcard_set_path(@flashcard_set), class: 'btn btn-primary' %>
+<%= link_to 'Back to Flashcard Sets', flashcard_sets_path, class: 'btn btn-secondary' %>
+<%= button_to 'Delete Flashcard Set', flashcard_set_path(@flashcard_set), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger' %>

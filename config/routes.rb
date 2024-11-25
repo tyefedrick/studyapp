@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "library/index"
   # Define the root path route ("/")
   root "welcome#index"
 
@@ -15,6 +16,11 @@ Rails.application.routes.draw do
   # Password routes for password management
   resources :passwords, param: :token, only: %i[new create edit update]
 
+  # Library Resources
+  resources :flashcard_sets do
+    resources :flashcards, only: [ :new, :create, :edit, :update, :destroy ]
+  end
+
   # Profile route for user profile page
   get "profile", to: "users#show", as: :profile
 
@@ -29,4 +35,5 @@ Rails.application.routes.draw do
   get "welcome/index"
   get "registrations/new"
   get "registrations/create"
+  get "library", to: "library#index", as: :library
 end

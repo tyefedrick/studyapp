@@ -1,0 +1,15 @@
+<h1>Your Flashcard Sets</h1>
+
+<% if @flashcard_sets.any? %>
+<ul>
+    <% @flashcard_sets.each do |set| %>
+    <li><%= link_to set.title, flashcard_set_path(set) %></li>
+    <% end %>
+</ul>
+<% else %>
+<p>You have no flashcard sets. <%= link_to 'Create one now', new_flashcard_set_path %></p>
+<% end %>
+
+<div class="actions">
+    <%= link_to 'Create New Flashcard Set', new_flashcard_set_path, class: 'btn btn-success' %>
+</div>
