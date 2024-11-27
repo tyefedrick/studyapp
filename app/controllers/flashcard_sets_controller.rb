@@ -25,14 +25,14 @@ class FlashcardSetsController < ApplicationController
   end
 
   def edit
-    # Edit action logic handled by view
+    @flashcard_set.flashcards.build # Prepare a new flashcard form in case a user wants to add cards.
   end
 
   def update
     if @flashcard_set.update(flashcard_set_params)
-      redirect_to @flashcard_set, notice: "Flashcard set was successfully updated."
+      redirect_to @flashcard_set, notice: "Flashcard set and flashcards were successfully updated."
     else
-      render :edit
+      render :edit, alert: "There was an error updating the flashcard set."
     end
   end
 
@@ -48,6 +48,11 @@ class FlashcardSetsController < ApplicationController
   end
 
   def flashcard_set_params
-    params.require(:flashcard_set).permit(:title, :description, :visibility)
+    params.require(:flashcard_set).permit(
+      :title,
+      :description,
+      :visibility,
+      flashcards_attributes: %i[id question answer _destroy]
+    )
   end
 end

@@ -2,6 +2,8 @@ class FlashcardSet < ApplicationRecord
   belongs_to :user
   has_many :flashcards, dependent: :destroy
 
+  accepts_nested_attributes_for :flashcards, allow_destroy: true
+
   VISIBILITY_OPTIONS = { private: 0, public: 1 }.freeze
 
   validates :title, presence: true
