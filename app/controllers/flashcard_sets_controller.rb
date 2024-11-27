@@ -12,11 +12,10 @@ class FlashcardSetsController < ApplicationController
 
   def create
     @flashcard_set = current_user.flashcard_sets.build(flashcard_set_params)
-
     if @flashcard_set.save
-      redirect_to @flashcard_set, notice: "Flashcard set was successfully created."
+      redirect_to edit_flashcard_set_path(@flashcard_set), notice: "Flashcard set was successfully created."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -25,7 +24,10 @@ class FlashcardSetsController < ApplicationController
   end
 
   def edit
-    @flashcard_set.flashcards.build # Prepare a new flashcard form in case a user wants to add cards.
+    respond_to do |format|
+      format.html
+      format.js   # Add this to handle AJAX requests
+    end
   end
 
   def update
@@ -52,7 +54,7 @@ class FlashcardSetsController < ApplicationController
       :title,
       :description,
       :visibility,
-      flashcards_attributes: %i[id question answer _destroy]
+      flashcards_attributes: [ :id, :question, :answer, :_destroy ]
     )
   end
 end

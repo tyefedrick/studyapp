@@ -24,6 +24,10 @@ gem "pundit"
 gem "stringio", "~> 3.1.2"
 # Handles confirmation dialogs, non-GET requests from links, asynchronous form submission, and automatic submit button disabling
 gem "rails-ujs"
+# This is to simplify Javascript and handle things like dynamic nested forms
+gem "cocoon"
+gem "jquery-rails"
+
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"

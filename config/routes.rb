@@ -17,9 +17,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token, only: %i[new create edit update]
 
   # Library Resources
-  resources :flashcard_sets do
-    resources :flashcards, only: [ :new, :create, :edit, :update, :destroy ]
-  end
+  resources :flashcard_sets
 
   # Profile route for user profile page
   get "profile", to: "users#show", as: :profile
