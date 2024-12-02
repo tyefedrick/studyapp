@@ -1,3 +1,4 @@
+# /Users/tylerfedrick/studyapp/config/routes.rb
 Rails.application.routes.draw do
   get "library/index"
   # Define the root path route ("/")
@@ -27,6 +28,21 @@ Rails.application.routes.draw do
 
   # Health check route
   get "up", to: "rails/health#show", as: :rails_health_check
+
+  # Test Routes
+  resources :test_sets do
+    member do
+      get :take_test
+      post :submit_answer
+      post :submit_test  # Change from get to post
+      get :test_results  # Add this for showing results
+      post :reset_recent_stats
+    end
+
+    collection do
+      get :missed_questions
+    end
+  end
 
   # Location routes
   get "home/index"

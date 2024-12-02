@@ -1,0 +1,13 @@
+<%# app/views/test_sets/_fill_in_blank_options.html.erb %>
+<div class="options">
+    <%= f.fields_for :answer_options do |option| %>
+    <div class="field">
+        <%= option.text_field :content, placeholder: 'Correct answer', class: 'form-control' %>
+        <%= option.hidden_field :correct, value: true %>
+        <%= link_to_remove_association 'Remove Answer', option, class: 'btn btn-warning btn-sm' %>
+    </div>
+    <% end %>
+    <%= link_to_add_association 'Add Alternative Answer', f, :answer_options,
+      class: 'btn btn-info btn-sm',
+      partial: 'answer_option_fields' %>
+</div>

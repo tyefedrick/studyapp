@@ -1,0 +1,32 @@
+<%# app/views/test_sets/_question_fields.html.erb %>
+<div class="nested-fields card mb-3">
+    <div class="card-body">
+        <div class="field">
+            <%= f.label :question_type %>
+            <%= f.select :question_type, Question.question_types.keys.map { |type| [type.humanize, type] },
+                  {}, { class: 'form-select' } %>
+        </div>
+        <div class="field">
+            <%= f.label :content, 'Question' %>
+            <%= f.text_area :content, required: true, class: 'form-control' %>
+        </div>
+        <div class="field">
+            <%= f.label :explanation %>
+            <%= f.text_area :explanation, class: 'form-control' %>
+        </div>
+        <div class="answer-options-container" id="answer-options-<%= f.object.object_id %>">
+            <%= f.fields_for :answer_options do |answer_form| %>
+            <%= render 'answer_option_fields', f: answer_form %>
+            <% end %>
+            <div class="actions">
+                <%= link_to_add_association 'Add Answer Option', f, :answer_options,
+                    class: 'btn btn-info btn-sm',
+                    data: {
+                        association_insertion_node: "#answer-options-#{f.object.object_id}",
+                        association_insertion_method: :append
+                    } %>
+            </div>
+        </div>
+        <%= link_to_remove_association 'Remove Question', f, class: 'btn btn-danger' %>
+    </div>
+</div>

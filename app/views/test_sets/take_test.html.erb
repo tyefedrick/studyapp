@@ -1,0 +1,44 @@
+<%# app/views/test_sets/take_test.html.erb %>
+<div class="container">
+    <h1><%= @test_set.title %></h1>
+
+    <% if @show_score %>
+    <div class="score-display alert alert-info mb-3">
+        <strong>Current Score:</strong> <%= @current_score %>%
+        (<%= @correct_answers %> correct out of <%= @total_questions %> questions)
+    </div>
+    <% end %>
+
+    <div class="progress mb-3">
+        <div class="progress-bar" role="progressbar" style="width: <%= (@current_question_index + 1).to_f / @total_questions * 100 %>%">
+            Question <%= @current_question_index + 1 %> of <%= @total_questions %>
+        </div>
+    </div>
+
+    <div class="question-content">
+        <%= render 'question_display', 
+        question: @current_question, 
+        show_answer: @show_answer,
+        show_explanation: @show_explanation %>
+    </div>
+
+    <div class="navigation-buttons mt-3">
+        <%= link_to 'Previous', 
+        take_test_test_set_path(@test_set, 
+          question: @current_question_index - 1,
+          show_answer: params[:show_answer],
+          show_explanation: params[:show_explanation],
+          show_score_as_you_go: params[:show_score_as_you_go]),
+        class: 'btn btn-secondary me-2',
+        disabled: @current_question_index == 0 %>
+
+        <%= link_to 'Next', 
+        take_test_test_set_path(@test_set, 
+          question: @current_question_index + 1,
+          show_answer: params[:show_answer],
+          show_explanation: params[:show_explanation],
+          show_score_as_you_go: params[:show_score_as_you_go]),
+        class: 'btn btn-primary',
+        disabled: @current_question_index == @total_questions - 1 %>
+    </div>
+</div>

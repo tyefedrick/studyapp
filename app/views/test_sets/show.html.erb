@@ -1,0 +1,68 @@
+<%# app/views/test_sets/show.html.erb %>
+<div class="container" data-controller="confirmation">
+    <h1><%= @test_set.title %></h1>
+    <p><%= @test_set.description %></p>
+
+    <div class="test-settings mb-4">
+        <h3>Test Options</h3>
+        <%= form_with(url: take_test_test_set_path(@test_set), method: :get, local: true) do |f| %>
+        <div class="form-check mb-2">
+            <%= check_box_tag :show_score_as_you_go, "1", @test_set.show_score_as_you_go, class: "form-check-input" %>
+            <%= label_tag :show_score_as_you_go, "Show Score as You Go", class: "form-check-label" %>
+        </div>
+        <div class="form-check mb-2">
+            <%= check_box_tag :show_explanation, "1", @test_set.show_explanation, class: "form-check-input" %>
+            <%= label_tag :show_explanation, "Show Explanation", class: "form-check-label" %>
+        </div>
+        <div class="form-check mb-3">
+            <%= check_box_tag :show_answer, "1", @test_set.show_answer, class: "form-check-input" %>
+            <%= label_tag :show_answer, "Show Answer", class: "form-check-label" %>
+        </div>
+        <%= hidden_field_tag :question, 0 %>
+        <%= hidden_field_tag :new_test, true %>
+        <%= f.submit "Start Test", class: "btn btn-primary" %>
+        <% end %>
+    </div>
+
+    <div class="actions mb-4">
+        <%= link_to 'Edit Test', edit_test_set_path(@test_set), class: 'btn btn-secondary me-2' %>
+        <%= link_to 'Back to Tests', test_sets_path, class: 'btn btn-outline-secondary me-2' %>
+        <button class="btn btn-danger" data-action="click->confirmation#show">Delete Test</button>
+    </div>
+
+    <div class="questions">
+        <h3>Questions (<%= @test_set.questions.count %>)</h3>
+        <% @test_set.questions.each_with_index do |question, index| %>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Question <%= index + 1 %></h5>
+                <p class="card-text"><strong>Type:</strong> <%= question.question_type.humanize %></p>
+                <p class="card-text"><%= question.content %></p>
+            </div>
+        </div>
+        <% end %>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" data-confirmation-target="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this test?
+                </div>
+                <div class="modal-footer">
+                    <%= button_to 'Delete', 
+             test_set_path(@test_set),
+             method: :delete,
+             class: 'btn btn-danger',
+             data: { action: "confirmation#confirm" } %>
+                    <button type="button" class="btn btn-secondary" data-action="confirmation#hide">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

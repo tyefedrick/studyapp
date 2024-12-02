@@ -1,0 +1,14 @@
+<%# app/views/test_sets/_multiple_choice_options.html.erb %>
+<div class="options">
+    <%= f.fields_for :answer_options do |option| %>
+    <div class="field">
+        <%= option.text_field :content, placeholder: 'Option text', class: 'form-control' %>
+        <%= option.check_box :correct %>
+        <%= option.label :correct, 'Correct answer?' %>
+        <%= link_to_remove_association 'Remove Option', option, class: 'btn btn-warning btn-sm' %>
+    </div>
+    <% end %>
+    <%= link_to_add_association 'Add Option', f, :answer_options, 
+      class: 'btn btn-info btn-sm',
+      partial: 'answer_option_fields' %>
+</div>

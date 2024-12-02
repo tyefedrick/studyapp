@@ -1,19 +1,16 @@
 class User < ApplicationRecord
-   # Define user roles
-   # enum role: { regular: 0, admin: 1 }
-
-   # Secure password handling
-   has_secure_password
+  has_secure_password
 
   # Associations
   has_many :sessions, dependent: :destroy
+  has_many :flashcard_sets, dependent: :destroy
+  has_many :test_sets, dependent: :destroy
+  has_many :user_responses, dependent: :destroy
 
-  # Set default role after initialization
+  # Callbacks
   after_initialize :set_default_role, if: :new_record?
 
-  # For flash cards
-  has_many :flashcard_sets, dependent: :destroy
-
+  # Class methods
   def self.authenticate_by(email_address:, password:)
     user = find_by(email_address: email_address)
     user&.authenticate(password)

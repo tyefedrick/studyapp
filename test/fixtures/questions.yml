@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_set: one
+  content: MyText
+  explanation: MyText
+  question_type: 1
+  position: 1
+
+two:
+  test_set: two
+  content: MyText
+  explanation: MyText
+  question_type: 1
+  position: 1

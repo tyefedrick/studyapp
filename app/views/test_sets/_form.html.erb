@@ -1,0 +1,56 @@
+<%# app/views/test_sets/_form.html.erb %>
+<%= form_with(model: test_set, local: true, data: { turbo: true }) do |form| %>
+<% if test_set.errors.any? %>
+<div id="error_explanation" class="alert alert-danger">
+    <h2><%= pluralize(test_set.errors.count, "error") %> prohibited this test set from being saved:</h2>
+    <ul>
+        <% test_set.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, required: true, class: 'form-control' %>
+</div>
+
+<div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control' %>
+</div>
+
+<div class="field">
+    <%= form.check_box :show_score_as_you_go %>
+    <%= form.label :show_score_as_you_go %>
+</div>
+
+<div class="field">
+    <%= form.check_box :show_explanation %>
+    <%= form.label :show_explanation %>
+</div>
+
+<div class="field">
+    <%= form.check_box :show_answer %>
+    <%= form.label :show_answer %>
+</div>
+
+<h2>Questions</h2>
+<div id="questions">
+    <%= form.fields_for :questions do |question_form| %>
+    <%= render 'question_fields', f: question_form %>
+    <% end %>
+</div>
+
+<div class="actions mb-3">
+    <%= link_to_add_association 'Add Question', form, :questions,
+      class: 'btn btn-primary',
+      data: {
+        association_insertion_node: '#questions',
+        association_insertion_method: :append
+      } %>
+</div>
+
+<%= form.submit class: 'btn btn-success' %>
+<% end %>

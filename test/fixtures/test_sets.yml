@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  user: one
+  show_score_as_you_go: false
+  show_explanation: false
+  show_answer: false
+
+two:
+  title: MyString
+  description: MyText
+  user: two
+  show_score_as_you_go: false
+  show_explanation: false
+  show_answer: false

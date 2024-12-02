@@ -1,0 +1,39 @@
+<%# app/views/test_sets/_question_display.html.erb %>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Question <%= @current_question_index + 1 %></h5>
+        <p class="card-text"><%= question.content %></p>
+
+        <%= form_with(url: submit_answer_test_set_path(@test_set), method: :post, local: true) do |f| %>
+        <%= hidden_field_tag :question_id, question.id %>
+        <%= hidden_field_tag :current_question_index, @current_question_index %>
+        <%= hidden_field_tag :show_explanation, params[:show_explanation] %>
+        <%= hidden_field_tag :show_answer, params[:show_answer] %>
+        <%= hidden_field_tag :show_score_as_you_go, params[:show_score_as_you_go] %>
+
+        <% case question.question_type %>
+        <% when 'multiple_choice' %>
+        <div data-controller="answer-feedback">
+            <% question.answer_options.each do |option| %>
+            <div class="form-check <%= 'bg-success text-white' if @user_answer&.selected_answer.to_s == option.id.to_s && @user_answer&.correct_recent_attempts.to_i > 0 %>
+                                              <%= 'bg-danger text-white' if @user_answer&.selected_answer.to_s == option.id.to_s && @user_answer&.incorrect_recent_attempts.to_i > 0 %>">
+                <%= radio_button_tag 'answer', option.id, @user_answer&.selected_answer.to_s == option.id.to_s, class: 'form-check-input' %>
+                <%= label_tag "answer_#{option.id}", option.content, class: 'form-check-label' %>
+            </div>
+            <% end %>
+
+            <% if @show_answer || params[:show_answer] == "1" %>
+            <%= f.submit 'Submit Answer', class: 'btn btn-primary mt-3' %>
+            <% end %>
+
+            <% if @user_answer&.selected_answer.present? && (@show_explanation || params[:show_explanation] == "1") && question.explanation.present? %>
+            <div class="explanation mt-3 alert alert-info">
+                <h6>Explanation:</h6>
+                <p><%= question.explanation %></p>
+            </div>
+            <% end %>
+        </div>
+        <% end %>
+        <% end %>
+    </div>
+</div>

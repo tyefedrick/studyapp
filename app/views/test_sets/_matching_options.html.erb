@@ -1,0 +1,13 @@
+<%# app/views/test_sets/_matching_options.html.erb %>
+<div class="options">
+    <%= f.fields_for :answer_options do |option| %>
+    <div class="field d-flex">
+        <%= option.text_field :content, placeholder: 'Item to match', class: 'form-control' %>
+        <%= option.number_field :matching_id, placeholder: 'Matching pair ID', class: 'form-control' %>
+        <%= link_to_remove_association 'Remove Pair', option, class: 'btn btn-warning btn-sm' %>
+    </div>
+    <% end %>
+    <%= link_to_add_association 'Add Matching Pair', f, :answer_options,
+      class: 'btn btn-info btn-sm',
+      partial: 'answer_option_fields' %>
+</div>

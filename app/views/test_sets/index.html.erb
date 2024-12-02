@@ -1,0 +1,16 @@
+<%# app/views/test_sets/index.html.erb %>
+<h1>Your Test Sets</h1>
+
+<% if @test_sets.any? %>
+<ul>
+    <% @test_sets.each do |set| %>
+    <li><%= link_to set.title, test_set_path(set) %></li>
+    <% end %>
+</ul>
+<% else %>
+<p>You have no test sets. <%= link_to 'Create one now', new_test_set_path %></p>
+<% end %>
+
+<div class="actions">
+    <%= link_to 'Create New Test Set', new_test_set_path, class: 'btn btn-success' %>
+</div>
