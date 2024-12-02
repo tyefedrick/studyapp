@@ -91,9 +91,18 @@ class TestSetsController < ApplicationController
       test_session: session[:test_session_id]
     )
 
-    @user_response.update(selected_answer: params[:answer])
+    # Handle the answer based on question type
+    answer = case @question.question_type
+    when "multiple_selection"
+              # Convert array of answers to comma-separated string
+              Array(params[:answer]).join(",")
+    else
+              params[:answer]
+    end
 
-    if correct_answer?(params[:answer])
+    @user_response.update(selected_answer: answer)
+
+    if correct_answer?(answer)
       handle_correct_answer
     else
       handle_incorrect_answer
@@ -182,7 +191,9 @@ class TestSetsController < ApplicationController
     when "multiple_choice"
       answer == @question.answer_options.find_by(correct: true).id.to_s
     when "multiple_selection"
-      Set.new(answer.map(&:to_i)) == Set.new(@question.answer_options.where(correct: true).pluck(:id))
+      selected_answers = answer.to_s.split(",").map(&:to_i).sort
+      correct_answers = @question.answer_options.where(correct: true).pluck(:id).sort
+      selected_answers == correct_answers
     when "fill_in_blank"
       answer.downcase.strip == @question.answer_options.find_by(correct: true).content.downcase.strip
     when "matching"

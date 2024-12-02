@@ -4,15 +4,19 @@
         <div class="card-body text-center">
             <h2>Ready to Submit Test</h2>
             <p>You've completed "<%= @test_set.title %>"</p>
-
             <%= button_to 'Submit Test', 
-          submit_test_test_set_path(@test_set),
-          method: :post,
-          class: 'btn btn-primary mb-3' %>
-
+                submit_test_test_set_path(@test_set),
+                method: :post,
+                class: 'btn btn-primary mb-3' %>
             <%= link_to 'Review Previous Questions', 
-          take_test_test_set_path(@test_set, question: @total_questions - 1),
-          class: 'btn btn-secondary' %>
+                take_test_test_set_path(
+                    @test_set, 
+                    question: @total_questions - 1,
+                    show_answer: params[:show_answer],
+                    show_explanation: params[:show_explanation],
+                    show_score_as_you_go: params[:show_score_as_you_go]
+                ),
+                class: 'btn btn-secondary' %>
         </div>
     </div>
 </div>

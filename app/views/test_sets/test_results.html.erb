@@ -1,7 +1,6 @@
 <%# app/views/test_sets/test_results.html.erb %>
 <div class="container">
     <h1>Test Results</h1>
-
     <% if @current_score.present? %>
     <div class="score-summary card mb-4">
         <div class="card-body text-center">
@@ -12,7 +11,6 @@
         </div>
     </div>
     <% end %>
-
     <div class="questions-review">
         <h3 class="mb-3">Question Review</h3>
         <% @test_responses.each_with_index do |response, index| %>
@@ -25,18 +23,20 @@
             </div>
             <div class="card-body">
                 <p><strong>Question:</strong> <%= response.question.content %></p>
-
                 <div class="answer-section">
-                    <p><strong>Selected Answer:</strong></p>
+                    <p><strong>Selected Answer<%= response.question.question_type == 'multiple_selection' ? 's' : '' %>:</strong></p>
                     <% response.question.answer_options.each do |option| %>
                     <div class="form-check <%= 'bg-success text-white' if option.correct %>
-                                            <%= 'bg-danger text-white' if response.selected_answer.to_s == option.id.to_s && !option.correct %>">
+                            <%= 'bg-danger text-white' if response.selected_answer&.split(',')&.include?(option.id.to_s) && !option.correct %>">
+                        <% if response.question.question_type == 'multiple_selection' %>
+                        <input type="checkbox" disabled <%= 'checked' if response.selected_answer&.split(',')&.include?(option.id.to_s) %>>
+                        <% else %>
                         <input type="radio" disabled <%= 'checked' if response.selected_answer.to_s == option.id.to_s %>>
+                        <% end %>
                         <label><%= option.content %></label>
                     </div>
                     <% end %>
                 </div>
-
                 <% if response.question.explanation.present? %>
                 <div class="explanation mt-3 alert alert-info">
                     <h6>Explanation:</h6>
@@ -47,7 +47,6 @@
         </div>
         <% end %>
     </div>
-
     <div class="actions mt-4">
         <%= link_to 'Retake Test', test_set_path(@test_set), class: 'btn btn-primary me-2' %>
         <%= link_to 'Back to Test List', test_sets_path, class: 'btn btn-secondary' %>

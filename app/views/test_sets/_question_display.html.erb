@@ -1,6 +1,13 @@
 <%# app/views/test_sets/_question_display.html.erb %>
 <div class="card">
     <div class="card-body">
+        <% if @show_score %>
+        <div class="score-display alert alert-info mb-3">
+            <strong>Current Score:</strong> <%= @current_score %>%
+            (<%= @correct_answers %> correct out of <%= @total_questions %> questions)
+        </div>
+        <% end %>
+
         <h5 class="card-title">Question <%= @current_question_index + 1 %></h5>
         <p class="card-text"><%= question.content %></p>
 
@@ -21,17 +28,30 @@
                 <%= label_tag "answer_#{option.id}", option.content, class: 'form-check-label' %>
             </div>
             <% end %>
-
-            <% if @show_answer || params[:show_answer] == "1" %>
-            <%= f.submit 'Submit Answer', class: 'btn btn-primary mt-3' %>
-            <% end %>
-
-            <% if @user_answer&.selected_answer.present? && (@show_explanation || params[:show_explanation] == "1") && question.explanation.present? %>
-            <div class="explanation mt-3 alert alert-info">
-                <h6>Explanation:</h6>
-                <p><%= question.explanation %></p>
+        </div>
+        <% when 'multiple_selection' %>
+        <div data-controller="answer-feedback">
+            <% question.answer_options.each do |option| %>
+            <div class="form-check <%= 'bg-success text-white' if @user_answer&.selected_answer&.include?(option.id.to_s) && @user_answer&.correct_recent_attempts.to_i > 0 %>
+                                              <%= 'bg-danger text-white' if @user_answer&.selected_answer&.include?(option.id.to_s) && @user_answer&.incorrect_recent_attempts.to_i > 0 %>">
+                <%= check_box_tag 'answer[]', option.id, 
+                                @user_answer&.selected_answer&.split(',')&.include?(option.id.to_s), 
+                                class: 'form-check-input' %>
+                <%= label_tag "answer_#{option.id}", option.content, class: 'form-check-label' %>
             </div>
             <% end %>
+        </div>
+        <% end %>
+
+        <% if @show_answer || params[:show_answer] == "1" %>
+        <%= f.submit 'Submit Answer', class: 'btn btn-primary mt-3' %>
+        <% end %>
+
+        <% if @user_answer&.selected_answer.present? && question.explanation.present? &&
+                  (@show_explanation || params[:show_explanation] == "1") %>
+        <div class="explanation mt-3 alert alert-info">
+            <h6>Explanation:</h6>
+            <p><%= question.explanation %></p>
         </div>
         <% end %>
         <% end %>
