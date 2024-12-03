@@ -1,9 +1,14 @@
 <%# app/views/test_sets/_answer_option_fields.html.erb %>
 <div class="nested-fields">
     <div class="field">
+        <%# Text field for the answer option's content %>
         <%= f.text_field :content, class: 'form-control' %>
+
+        <%# Checkbox to mark if this answer option is correct %>
         <%= f.check_box :correct %>
         <%= f.label :correct, 'Correct?' %>
+
+        <%# Button to remove this answer option from the form %>
         <%= link_to_remove_association 'Remove', f, class: 'btn btn-warning btn-sm' %>
     </div>
 </div>

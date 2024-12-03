@@ -1,13 +1,22 @@
 <%# app/views/test_sets/_fill_in_blank_options.html.erb %>
+
 <div class="options">
+    <%# Iterates over existing answer options associated with the form object %>
     <%= f.fields_for :answer_options do |option| %>
     <div class="field">
+        <%# Text field for the content of the answer option %>
         <%= option.text_field :content, placeholder: 'Correct answer', class: 'form-control' %>
+
+        <%# Hidden field setting the 'correct' attribute to true %>
         <%= option.hidden_field :correct, value: true %>
+
+        <%# Link to remove the current answer option, provided by the Cocoon gem %>
         <%= link_to_remove_association 'Remove Answer', option, class: 'btn btn-warning btn-sm' %>
     </div>
     <% end %>
+
+    <%# Link to add a new answer option, using a specified partial for the fields %>
     <%= link_to_add_association 'Add Alternative Answer', f, :answer_options,
-      class: 'btn btn-info btn-sm',
-      partial: 'answer_option_fields' %>
+    class: 'btn btn-info btn-sm',
+    partial: 'answer_option_fields' %>
 </div>

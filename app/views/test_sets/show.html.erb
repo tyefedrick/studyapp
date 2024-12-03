@@ -1,42 +1,59 @@
 <%# app/views/test_sets/show.html.erb %>
 <div class="container" data-controller="confirmation">
+    <!-- Displays the title of the test set -->
     <h1><%= @test_set.title %></h1>
+
+    <!-- Displays the description of the test set -->
     <p><%= @test_set.description %></p>
 
+    <!-- Section for test settings/options -->
     <div class="test-settings mb-4">
         <h3>Test Options</h3>
+        <!-- Form to set options and start the test -->
         <%= form_with(url: take_test_test_set_path(@test_set), method: :get, local: true) do |f| %>
+        <!-- Option to show score as you go -->
         <div class="form-check mb-2">
             <%= check_box_tag :show_score_as_you_go, "1", @test_set.show_score_as_you_go, class: "form-check-input" %>
             <%= label_tag :show_score_as_you_go, "Show Score as You Go", class: "form-check-label" %>
         </div>
+        <!-- Option to show explanations -->
         <div class="form-check mb-2">
             <%= check_box_tag :show_explanation, "1", @test_set.show_explanation, class: "form-check-input" %>
             <%= label_tag :show_explanation, "Show Explanation", class: "form-check-label" %>
         </div>
+        <!-- Option to show answers -->
         <div class="form-check mb-3">
             <%= check_box_tag :show_answer, "1", @test_set.show_answer, class: "form-check-input" %>
             <%= label_tag :show_answer, "Show Answer", class: "form-check-label" %>
         </div>
+        <!-- Hidden fields to initialize test parameters -->
         <%= hidden_field_tag :question, 0 %>
         <%= hidden_field_tag :new_test, true %>
+        <!-- Submit button to start the test -->
         <%= f.submit "Start Test", class: "btn btn-primary" %>
         <% end %>
     </div>
 
+    <!-- Action buttons for editing, navigating back, and deleting the test set -->
     <div class="actions mb-4">
+        <!-- Link to edit the test set -->
         <%= link_to 'Edit Test', edit_test_set_path(@test_set), class: 'btn btn-secondary me-2' %>
+        <!-- Link to go back to the list of test sets -->
         <%= link_to 'Back to Tests', test_sets_path, class: 'btn btn-outline-secondary me-2' %>
+        <!-- Button to trigger the delete confirmation modal -->
         <button class="btn btn-danger" data-action="click->confirmation#show">Delete Test</button>
     </div>
 
+    <!-- List of questions associated with the test set -->
     <div class="questions">
         <h3>Questions (<%= @test_set.questions.count %>)</h3>
         <% @test_set.questions.each_with_index do |question, index| %>
         <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">Question <%= index + 1 %></h5>
+                <!-- Displays the type of the question -->
                 <p class="card-text"><strong>Type:</strong> <%= question.question_type.humanize %></p>
+                <!-- Displays the content of the question -->
                 <p class="card-text"><%= question.content %></p>
             </div>
         </div>
@@ -49,17 +66,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirm Delete</h5>
+                    <!-- Button to close the modal -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     Are you sure you want to delete this test?
                 </div>
                 <div class="modal-footer">
-                    <%= button_to 'Delete', 
-             test_set_path(@test_set),
-             method: :delete,
-             class: 'btn btn-danger',
-             data: { action: "confirmation#confirm" } %>
+                    <!-- Button to confirm deletion -->
+                    <%= button_to 'Delete', test_set_path(@test_set), method: :delete, class: 'btn btn-danger', data: { action: "confirmation#confirm" } %>
+                    <!-- Button to cancel and close the modal -->
                     <button type="button" class="btn btn-secondary" data-action="confirmation#hide">Cancel</button>
                 </div>
             </div>

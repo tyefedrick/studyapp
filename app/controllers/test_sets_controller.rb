@@ -1,25 +1,35 @@
 class TestSetsController < ApplicationController
+  # Callbacks to set the test set and ensure authentication
   before_action :set_test_set, only: [ :show, :edit, :update, :destroy, :take_test, :submit_answer, :submit_test, :reset_recent_stats, :test_results ]
   before_action :require_authentication
 
+  # GET /test_sets
+  # Retrieves and displays all test sets associated with the current user
   def index
     @test_sets = current_user.test_sets
   end
 
+  # GET /test_sets/:id
+  # Displays a specific test set
   def show
   end
 
+  # GET /test_sets/new
+  # Initializes a new test set for the current user
   def new
     @test_set = current_user.test_sets.new
   end
 
+  # POST /test_sets
+  # Creates a new test set with the provided parameters
   def create
     @test_set = current_user.test_sets.build(test_set_params)
 
     if @test_set.save
+      # Redirects to the newly created test set with a success notice
       redirect_to @test_set, notice: "Test set was successfully created."
     else
-      # Add answer options if validation fails
+      # If validation fails, ensure each question has at least one answer option
       @test_set.questions.each do |question|
         question.answer_options.build if question.answer_options.empty?
       end
@@ -31,13 +41,19 @@ class TestSetsController < ApplicationController
     end
   end
 
+  # GET /test_sets/:id/edit
+  # Retrieves the test set for editing
   def edit
   end
 
+  # PATCH/PUT /test_sets/:id
+  # Updates the specified test set with the provided parameters
   def update
     if @test_set.update(test_set_params)
+      # Redirects to the updated test set with a success notice
       redirect_to @test_set, notice: "Test set was successfully updated."
     else
+      # Responds with the 'edit' template and unprocessable entity status
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream { render :edit, status: :unprocessable_entity }
@@ -45,8 +61,11 @@ class TestSetsController < ApplicationController
     end
   end
 
+  # DELETE /test_sets/:id
+  # Deletes the specified test set
   def destroy
     @test_set.destroy
+    # Redirects to the list of test sets with a deletion notice
     redirect_to test_sets_url, notice: "Test set was successfully deleted."
   end
 

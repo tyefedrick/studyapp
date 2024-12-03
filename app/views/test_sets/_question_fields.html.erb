@@ -1,32 +1,44 @@
 <%# app/views/test_sets/_question_fields.html.erb %>
 <div class="nested-fields card mb-3">
     <div class="card-body">
+        <%# Dropdown for selecting the question type %>
         <div class="field">
             <%= f.label :question_type %>
-            <%= f.select :question_type, Question.question_types.keys.map { |type| [type.humanize, type] },
-                  {}, { class: 'form-select' } %>
+            <%= f.select :question_type, Question.question_types.keys.map { |type| [type.humanize, type] }, {}, { class: 'form-select' } %>
         </div>
+
+        <%# Text area for entering the question content %>
         <div class="field">
             <%= f.label :content, 'Question' %>
             <%= f.text_area :content, required: true, class: 'form-control' %>
         </div>
+
+        <%# Text area for providing an explanation for the question %>
         <div class="field">
             <%= f.label :explanation %>
             <%= f.text_area :explanation, class: 'form-control' %>
         </div>
+
+        <%# Container for nested answer options %>
         <div class="answer-options-container" id="answer-options-<%= f.object.object_id %>">
+            <%# Iterates over existing answer options and renders their fields using a partial %>
             <%= f.fields_for :answer_options do |answer_form| %>
+            <%# Renders the partial '_answer_option_fields.html.erb' located in the same directory %>
             <%= render 'answer_option_fields', f: answer_form %>
             <% end %>
+
+            <%# Button to add a new answer option dynamically %>
             <div class="actions">
                 <%= link_to_add_association 'Add Answer Option', f, :answer_options,
-                    class: 'btn btn-info btn-sm',
-                    data: {
-                        association_insertion_node: "#answer-options-#{f.object.object_id}",
-                        association_insertion_method: :append
-                    } %>
+            class: 'btn btn-info btn-sm',
+            data: {
+              association_insertion_node: "#answer-options-#{f.object.object_id}",
+              association_insertion_method: :append
+            } %>
             </div>
         </div>
+
+        <%# Button to remove the entire question entry %>
         <%= link_to_remove_association 'Remove Question', f, class: 'btn btn-danger' %>
     </div>
 </div>
